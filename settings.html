@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Nuvabase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0d1117] text-[#e6edf3] font-['Inter']">
+    <div id="layout-root" class="flex min-h-screen">
+        <div id="sidebar-target"></div>
+        <div class="flex-1 flex flex-col min-w-0">
+            <div id="navbar-target"></div>
+            
+            <main class="p-8 lg:p-12 overflow-y-auto custom-scrollbar animate-fadeIn w-full max-w-4xl mx-auto space-y-12">
+                <header>
+                    <h1 class="text-3xl font-black text-white">Project Settings</h1>
+                    <p class="text-[#8b949e] mt-1">Configure your API access and infrastructure routing.</p>
+                </header>
+
+                <section class="space-y-6">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-[#484f58]">Infrastructure Routing</h3>
+                    <div class="card p-8 space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold text-[#8b949e] mb-2">Project URL</label>
+                            <div class="flex gap-2">
+                                <input type="text" readonly value="https://x82k91.nuvabase.dev" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-xl px-4 py-3 text-sm font-mono text-emerald-500 focus:outline-none">
+                                <button class="bg-[#30363d] hover:bg-[#484f58] px-5 rounded-xl text-xs font-bold transition-colors">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="space-y-6">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-[#484f58]">API Credentials</h3>
+                    <div class="card p-8 space-y-8">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold text-[#8b949e]">Anon Public Key</label>
+                                <span class="text-[9px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20 font-black">CLIENT-SAFE</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" readonly value="nova_pk_live_x82k91...z91" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-xl px-4 py-3 text-sm font-mono text-[#c9d1d9] focus:outline-none">
+                                <button class="bg-[#30363d] hover:bg-[#484f58] px-5 rounded-xl text-xs font-bold transition-colors">Copy</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold text-[#8b949e]">Service Role Key</label>
+                                <span class="text-[9px] bg-red-500/10 text-red-500 px-2 py-0.5 rounded border border-red-500/20 font-black uppercase">DANGEROUS / SERVER ONLY</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="password" id="secret-key" readonly value="nova_sk_live_x82k91_secret_92910" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-xl px-4 py-3 text-sm font-mono text-red-400 focus:outline-none">
+                                <button id="reveal-btn" class="bg-[#30363d] hover:bg-[#484f58] px-5 rounded-xl text-xs font-bold transition-colors">Reveal</button>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-[#30363d]">
+                            <button class="text-red-500 hover:text-red-400 text-xs font-black uppercase tracking-widest transition-colors">Rotate Global Secrets</button>
+                            <p class="text-[10px] text-[#484f58] mt-2 italic font-medium">Critical: Rotating keys will immediately disconnect all active clients.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { ui } from './js/ui.js';
+
+        if (!auth.isAuthenticated()) window.location.href = 'index.html';
+        ui.init('settings');
+
+        const secretInput = document.getElementById('secret-key');
+        const revealBtn = document.getElementById('reveal-btn');
+        revealBtn.onclick = () => {
+            if (secretInput.type === 'password') {
+                secretInput.type = 'text';
+                revealBtn.innerText = 'Hide';
+            } else {
+                secretInput.type = 'password';
+                revealBtn.innerText = 'Reveal';
+            }
+        };
+    </script>
+</body>
+</html>

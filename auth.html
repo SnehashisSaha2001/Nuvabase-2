@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Users | Nuvabase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0d1117] text-[#e6edf3] font-['Inter']">
+    <div id="layout-root" class="flex min-h-screen">
+        <div id="sidebar-target"></div>
+        <div class="flex-1 flex flex-col min-w-0">
+            <div id="navbar-target"></div>
+            
+            <main class="p-8 lg:p-12 overflow-y-auto custom-scrollbar animate-fadeIn w-full max-w-7xl mx-auto">
+                <header class="flex justify-between items-center mb-10">
+                    <div>
+                        <h1 class="text-3xl font-black text-white">Auth Management</h1>
+                        <p class="text-[#8b949e] mt-1">Control access and identify platform users.</p>
+                    </div>
+                    <button class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/20">
+                        Invite User
+                    </button>
+                </header>
+
+                <div class="card overflow-hidden">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Last Sign In</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list">
+                            <!-- Dynamic User Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { ui } from './js/ui.js';
+
+        if (!auth.isAuthenticated()) window.location.href = 'index.html';
+        ui.init('auth');
+
+        // Mock data loading
+        const users = [
+            { id: 'u-82k', email: 'jeff@amazon.com', status: 'Active', last: '2h ago' },
+            { id: 'u-91x', email: 'satya@microsoft.com', status: 'Active', last: '12h ago' },
+            { id: 'u-11p', email: 'banned@dev.io', status: 'Banned', last: '3d ago' }
+        ];
+
+        const list = document.getElementById('user-list');
+        list.innerHTML = users.map(user => `
+            <tr>
+                <td class="font-mono text-[11px] text-[#484f58]">${user.id}</td>
+                <td class="font-bold text-white">${user.email}</td>
+                <td>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter ${user.status === 'Active' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}">
+                        ${user.status}
+                    </span>
+                </td>
+                <td class="text-xs text-[#8b949e]">${user.last}</td>
+                <td class="text-right flex justify-end gap-3">
+                    <button class="text-emerald-500 hover:underline text-xs font-bold" onclick="alert('Reset email sent')">Reset Pwd</button>
+                    <button class="text-red-500 hover:underline text-xs font-bold" onclick="confirm('Are you sure?')">Disable</button>
+                </td>
+            </tr>
+        `).join('');
+    </script>
+</body>
+</html>

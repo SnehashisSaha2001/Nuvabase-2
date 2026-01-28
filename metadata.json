@@ -1,0 +1,5 @@
+{
+  "name": "Nuvabase Production Core",
+  "description": "High-performance, zero-dependency BaaS platform core using Native ES modules for 100% Edge compatibility and hard-isolated PostgreSQL multi-tenancy.",
+  "requestFramePermissions": []
+}

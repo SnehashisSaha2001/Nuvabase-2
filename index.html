@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuvabase | Production Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        /** 
+         * Robust process shim for non-Node environments. 
+         * Prevents ReferenceErrors when libraries expect process.env.
+         * We use window.process || {} to avoid overwriting existing platform-provided variables.
+         */
+        window.process = window.process || { env: {} };
+        window.process.env = window.process.env || {};
+        
+        // Provide an empty fallback for API_KEY if not injected by the hosting provider
+        if (typeof window.process.env.API_KEY === 'undefined') {
+            window.process.env.API_KEY = "";
+        }
+    </script>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react/": "https://esm.sh/react@19.0.0/",
+    "@google/genai": "https://esm.sh/@google/genai@1.38.0",
+    "recharts": "https://esm.sh/recharts@2.15.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.475.0",
+    "react-dom/": "https://esm.sh/react-dom@19.0.0/"
+  }
+}
+</script>
+</head>
+<body class="bg-[#161616] text-[#ededed] font-['Inter']">
+    <div id="root"></div>
+    <!-- 
+      Note: index.tsx is automatically loaded as an ES6 module by the deployment platform.
+      We remove the manual script tag here to prevent double-loading or execution conflicts.
+    -->
+</body>
+</html>
